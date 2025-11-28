@@ -12,30 +12,58 @@
         </Grid.RowDefinitions>
 
         <!-- Control Panel -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Padding="10" Background="#e0e0e0">
-            <Label Content="COM Port:" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <ComboBox Name="ComPortCombo" Width="100" VerticalAlignment="Center" Margin="0,0,20,0"/>
+        <StackPanel Grid.Row="0" Orientation="Vertical" Padding="10" Background="#e0e0e0">
+            <!-- Row 1: Connection Settings -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                <Label Content="COM Port:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                <ComboBox Name="ComPortCombo" Width="100" VerticalAlignment="Center" Margin="0,0,20,0"/>
 
-            <Label Content="Baud Rate:" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <ComboBox Name="BaudRateCombo" Width="100" VerticalAlignment="Center" 
-                      SelectedValuePath="Content" Margin="0,0,20,0">
-                <ComboBoxItem>9600</ComboBoxItem>
-                <ComboBoxItem IsSelected="True">19200</ComboBoxItem>
-                <ComboBoxItem>38400</ComboBoxItem>
-                <ComboBoxItem>57600</ComboBoxItem>
-                <ComboBoxItem>115200</ComboBoxItem>
-            </ComboBox>
+                <Label Content="Baud Rate:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                <ComboBox Name="BaudRateCombo" Width="100" VerticalAlignment="Center" 
+                          SelectedValuePath="Content" Margin="0,0,20,0">
+                    <ComboBoxItem>9600</ComboBoxItem>
+                    <ComboBoxItem IsSelected="True">19200</ComboBoxItem>
+                    <ComboBoxItem>38400</ComboBoxItem>
+                    <ComboBoxItem>57600</ComboBoxItem>
+                    <ComboBoxItem>115200</ComboBoxItem>
+                </ComboBox>
 
-            <Label Content="Slave ID:" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <TextBox Name="SlaveIdTextBox" Width="50" VerticalAlignment="Center" 
-                     Text="1" Margin="0,0,20,0"/>
+                <Label Content="Slave ID:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                <TextBox Name="SlaveIdTextBox" Width="50" VerticalAlignment="Center" 
+                         Text="1" Margin="0,0,20,0"/>
 
-            <Button Name="ConnectButton" Content="Connect" Width="80" Click="ConnectButton_Click"/>
-            <Button Name="DisconnectButton" Content="Disconnect" Width="80" Margin="5,0,0,0" 
-                    Click="DisconnectButton_Click" IsEnabled="False"/>
-            
-            <Label Name="StatusLabel" Content="Disconnected" Margin="20,0,0,0" 
-                   VerticalAlignment="Center" Foreground="Red" FontWeight="Bold"/>
+                <Button Name="ConnectButton" Content="Connect" Width="80" Click="ConnectButton_Click"/>
+                <Button Name="DisconnectButton" Content="Disconnect" Width="80" Margin="5,0,0,0" 
+                        Click="DisconnectButton_Click" IsEnabled="False"/>
+                
+                <Label Name="StatusLabel" Content="Disconnected" Margin="20,0,0,0" 
+                       VerticalAlignment="Center" Foreground="Red" FontWeight="Bold"/>
+            </StackPanel>
+
+            <!-- Row 2: Write Register Controls -->
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Write Register:" VerticalAlignment="Center" Margin="0,0,5,0" FontWeight="Bold"/>
+                <Label Content="Address:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                <TextBox Name="WriteAddressTextBox" Width="50" VerticalAlignment="Center" 
+                         Text="0" Margin="0,0,20,0"/>
+
+                <Label Content="Value:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                <TextBox Name="WriteValueTextBox" Width="80" VerticalAlignment="Center" 
+                         Text="0" Margin="0,0,10,0"/>
+
+                <Button Name="WriteSingleButton" Content="Write Single" Width="100" 
+                        Click="WriteSingleButton_Click" IsEnabled="False" Margin="0,0,10,0"/>
+                <Button Name="WriteCoilButton" Content="Write Coil" Width="100" 
+                        Click="WriteCoilButton_Click" IsEnabled="False" Margin="0,0,10,0"/>
+
+                <Button Name="LoggingButton" Content="Start Logging" Width="100" 
+                        Click="LoggingButton_Click" IsEnabled="False" Margin="0,0,10,0"/>
+                <Button Name="ExportButton" Content="Export CSV" Width="100" 
+                        Click="ExportButton_Click" IsEnabled="False" Margin="0,0,10,0"/>
+
+                <Label Name="WriteStatusLabel" Content="" Margin="20,0,0,0" 
+                       VerticalAlignment="Center" Foreground="Blue"/>
+            </StackPanel>
         </StackPanel>
 
         <!-- Graph Area -->
@@ -45,8 +73,21 @@
                 <ColumnDefinition Width="200"/>
             </Grid.ColumnDefinitions>
 
-            <!-- OxyPlot Graph -->
-            <oxy:PlotView Name="PlotView" Grid.Column="0" Background="White" Margin="0,0,10,0"/>
+            <!-- Tabs for Different Graph Types -->
+            <TabControl Grid.Column="0" Margin="0,0,10,0">
+                <TabItem Header="Time Series">
+                    <oxy:PlotView Name="PlotView" Background="White"/>
+                </TabItem>
+                <TabItem Header="Last Values">
+                    <oxy:PlotView Name="BarChartView" Background="White"/>
+                </TabItem>
+                <TabItem Header="Statistics">
+                    <StackPanel Orientation="Vertical" Padding="10" Background="White">
+                        <TextBlock Text="Register Statistics" FontWeight="Bold" FontSize="14" Margin="0,0,0,10"/>
+                        <TextBlock Name="StatsTextBlock" TextWrapping="Wrap" FontSize="12" FontFamily="Courier New"/>
+                    </StackPanel>
+                </TabItem>
+            </TabControl>
 
             <!-- Register List -->
             <StackPanel Grid.Column="1" Background="White" Padding="10">
