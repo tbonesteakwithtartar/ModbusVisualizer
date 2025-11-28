@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- LibModbus.NET for Modbus communication (lightweight, no external dependencies) -->
+    <PackageReference Include="NModbus" Version="3.0.166" />
+    <!-- OxyPlot for real-time graphing -->
+    <PackageReference Include="OxyPlot.Wpf" Version="2.1.2" />
+    <!-- SerialPort is built-in for USB-RS485 communication -->
+  </ItemGroup>
+
+</Project>
